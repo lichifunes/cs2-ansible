@@ -1,7 +1,7 @@
 import a2s
 import sys
 
-address = ("{{ cs2_public_ip }}", {{ cs2_port }})
+address = ("{{ ansible_host }}", {{ cs2_port }})
 
 try:
     info = a2s.info(address, timeout=5)

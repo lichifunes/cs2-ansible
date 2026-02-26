@@ -1,12 +1,4 @@
 ---
-- name: Vérifier que cs2_public_ip est défini
-  assert:
-    that:
-      - cs2_public_ip is defined
-      - cs2_public_ip != "TON_IP_PUBLIQUE"
-      - cs2_public_ip | length > 0
-    fail_msg: "ERREUR : cs2_public_ip n'est pas défini dans group_vars/all.yml"
-
 - name: Vérifier que cs2_gslt_token est défini
   assert:
     that:

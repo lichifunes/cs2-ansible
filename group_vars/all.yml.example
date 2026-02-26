@@ -1,17 +1,23 @@
-# === Réseau ===
-cs2_public_ip: "TON_IP_PUBLIQUE"
-cs2_port: 27015
+---
+# === Variables Semaphore (survey) ===
+# Ces variables doivent être définies par serveur dans Semaphore
 
-# === Identité du serveur ===
+# Nom affiché dans le browser de serveurs
 cs2_server_name: "Mon Serveur CS2"
+# Mot de passe pour rejoindre le serveur (laisser vide pour serveur public)
 cs2_password: "TON_MOT_DE_PASSE"
+# Mot de passe d'administration à distance (RCON) — à garder secret
 cs2_rcon_password: "TON_RCON_PASSWORD"
-
-# === Steam ===
+# Game Server Login Token — obligatoire pour être visible sur internet
+# Générer ici : https://steamcommunity.com/dev/managegameservers (App ID 730)
 cs2_gslt_token: "TON_TOKEN_GSLT"
 
-# === Jeu ===
-cs2_max_players: 10
-cs2_map: "de_dust2"
-cs2_game_type: 0
-cs2_game_mode: 1
+# === Variables fixes ===
+# Définies dans roles/cs2/defaults/main.yml — overridables si besoin
+# cs2_port: 27015
+# cs2_max_players: 10
+# cs2_map: "de_dust2"
+# cs2_game_type: 0
+# cs2_game_mode: 1
+
+# Note : l'IP publique est déduite automatiquement de ansible_host (inventaire)

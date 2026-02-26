@@ -1,0 +1,11 @@
+---
+# === Réseau ===
+# Port UDP du serveur CS2
+cs2_port: 27015
+
+# === Jeu ===
+cs2_max_players: 10
+cs2_map: "de_dust2"
+# game_type/game_mode : 0/1 = Compétitif, 0/0 = Casual, 1/2 = Deathmatch
+cs2_game_type: 0
+cs2_game_mode: 1
