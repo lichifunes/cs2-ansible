@@ -4,6 +4,9 @@
   become: true
   become_user: cs2server
 
+  vars:
+    cs2_port: 27015
+
   tasks:
     - name: Vérifier le processus CS2
       shell: pgrep -ax cs2
