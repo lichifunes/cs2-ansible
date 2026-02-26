@@ -56,6 +56,7 @@
     remote_src: true
     owner: cs2server
     group: cs2server
+  when: not ansible_check_mode
 
 - name: Installer CS2 via SteamCMD
   become_user: cs2server
@@ -67,6 +68,7 @@
     +quit
   args:
     creates: /home/cs2server/cs2-server/game/bin/linuxsteamrt64/cs2
+  when: not ansible_check_mode
 
 - name: Créer le répertoire cfg
   file:
