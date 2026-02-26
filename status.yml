@@ -50,5 +50,5 @@
 
     - name: Serveur injoignable en A2S
       debug:
-        msg: "Query A2S échouée — le serveur ne répond pas encore ou est arrêté."
+        msg: "Query A2S échouée : {{ a2s_query.stderr_lines | default([]) }}"
       when: a2s_query.rc != 0
