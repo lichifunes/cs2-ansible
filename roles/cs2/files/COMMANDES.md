@@ -119,10 +119,12 @@ sv_password "Pomelo2025" # Remettre le mot de passe
 ## Round & match
 
 ```bash
-mp_restartgame 1         # Redémarrer le match dans 1 seconde
+mp_restartgame 1         # Redémarrer le match dans 1 seconde (score 0-0)
 mp_warmup_start          # Lancer le warmup
 mp_warmup_end            # Terminer le warmup
 mp_endmatch              # Terminer le match en cours
+mp_pause_match           # Mettre en pause (pause technique)
+mp_unpause_match         # Reprendre la partie
 mp_swapteams             # Inverser les équipes
 mp_scrambleteams         # Mélanger les équipes aléatoirement
 
@@ -130,7 +132,9 @@ mp_maxrounds 24          # Nombre de rounds max
 mp_overtime_enable 1     # Activer les overtime
 mp_freezetime 15         # Durée du freeze time (secondes)
 mp_roundtime_defuse 1.92 # Durée d'un round (minutes)
+mp_roundtime_defuse 5    # Rounds de 5 min (plus relax)
 mp_buytime 20            # Durée du buy time (secondes)
+mp_buy_anywhere 1        # Acheter partout sur la map
 ```
 
 ---
@@ -153,6 +157,37 @@ sv_cheats 0              # Désactiver
 god                      # Invincibilité (cheats requis)
 noclip                   # Voler à travers les murs
 give weapon_awp          # Donner une arme
+
+# Mode fun : argent max
+sv_cheats 1; mp_startmoney 16000
+# Revenir en mode normal
+sv_cheats 0; mp_startmoney 800
+```
+
+---
+
+## Soirée LAN / Cyber — Aide-mémoire
+
+```bash
+# Avant la partie
+mp_warmup_end            # Forcer la fin du warmup
+mp_restartgame 1         # Lancer le match 0-0
+
+# Pendant la partie
+mp_pause_match           # Pause technique
+mp_unpause_match         # Reprendre
+mp_swapteams             # Inverser les équipes
+mp_scrambleteams         # Mélanger aléatoirement
+status                   # Voir les joueurs (ID, ping, steam)
+kick #2                  # Kick le joueur ID 2
+
+# Changer de mode + map rapidement
+game_type 0; game_mode 1; map de_inferno    # Compétitif Inferno
+game_type 1; game_mode 2; map de_dust2      # Deathmatch Dust2
+game_type 0; game_mode 0; map de_mirage     # Casual Mirage
+
+# Fin de soirée
+mp_endmatch              # Terminer le match proprement
 ```
 
 ---
