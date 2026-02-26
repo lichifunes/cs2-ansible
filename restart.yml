@@ -6,19 +6,19 @@
 
   tasks:
     - name: Vérifier si le serveur tourne
-      shell: screen -ls | grep -q cs2
-      register: screen_check
+      shell: pgrep -f "cs2 -dedicated"
+      register: cs2_process
       failed_when: false
       changed_when: false
 
     - name: Arrêter le serveur CS2
       shell: screen -S cs2 -X stuff "quit$(printf '\r')"
-      when: screen_check.rc == 0
+      when: cs2_process.rc == 0
 
     - name: Attendre l'arrêt
       pause:
         seconds: 5
-      when: screen_check.rc == 0
+      when: cs2_process.rc == 0
 
     - name: Démarrer le serveur CS2
       shell: screen -S cs2 -d -m /home/cs2server/start_cs2.sh

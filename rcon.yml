@@ -13,16 +13,16 @@
         fail_msg: "ERREUR : cs2_rcon_command n'est pas défini (survey variable)"
 
     - name: Vérifier si le serveur tourne
-      shell: screen -ls | grep -q cs2
-      register: screen_check
+      shell: pgrep -f "cs2 -dedicated"
+      register: cs2_process
       failed_when: false
       changed_when: false
 
     - name: Envoyer la commande
       shell: screen -S cs2 -X stuff "{{ cs2_rcon_command }}$(printf '\r')"
-      when: screen_check.rc == 0
+      when: cs2_process.rc == 0
 
     - name: Serveur non démarré
       fail:
         msg: "Le serveur CS2 n'est pas en cours d'exécution."
-      when: screen_check.rc != 0
+      when: cs2_process.rc != 0
