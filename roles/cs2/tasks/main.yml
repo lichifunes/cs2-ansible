@@ -24,6 +24,7 @@
       - python3-pip
       - curl
       - tar
+      - acl
     state: present
 
 - name: Installer python-a2s
