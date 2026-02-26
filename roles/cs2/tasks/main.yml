@@ -109,3 +109,10 @@
     owner: cs2server
     group: cs2server
     mode: '0644'
+
+- name: Démarrer le serveur CS2
+  become_user: cs2server
+  shell: screen -S cs2 -d -m /home/cs2server/start_cs2.sh
+  args:
+    chdir: /home/cs2server
+  when: not ansible_check_mode

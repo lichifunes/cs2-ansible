@@ -1,0 +1,28 @@
+---
+- name: Change CS2 Map
+  hosts: cs2
+  become: true
+  become_user: cs2server
+
+  tasks:
+    - name: Vérifier que cs2_new_map est défini
+      assert:
+        that:
+          - cs2_new_map is defined
+          - cs2_new_map | length > 0
+        fail_msg: "ERREUR : cs2_new_map n'est pas défini (survey variable)"
+
+    - name: Vérifier si le serveur tourne
+      shell: screen -ls | grep -q cs2
+      register: screen_check
+      failed_when: false
+      changed_when: false
+
+    - name: Changer la map
+      shell: screen -S cs2 -X stuff "map {{ cs2_new_map }}$(printf '\r')"
+      when: screen_check.rc == 0
+
+    - name: Serveur non démarré
+      fail:
+        msg: "Le serveur CS2 n'est pas en cours d'exécution."
+      when: screen_check.rc != 0

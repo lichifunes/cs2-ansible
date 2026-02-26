@@ -1,0 +1,34 @@
+---
+- name: Update CS2 Server
+  hosts: cs2
+  become: true
+  become_user: cs2server
+
+  tasks:
+    - name: Vérifier si le serveur tourne
+      shell: screen -ls | grep -q cs2
+      register: screen_check
+      failed_when: false
+      changed_when: false
+
+    - name: Arrêter le serveur CS2
+      shell: screen -S cs2 -X stuff "quit$(printf '\r')"
+      when: screen_check.rc == 0
+
+    - name: Attendre l'arrêt
+      pause:
+        seconds: 5
+      when: screen_check.rc == 0
+
+    - name: Mettre à jour CS2 via SteamCMD
+      command: >
+        /home/cs2server/steamcmd/steamcmd.sh
+        +login anonymous
+        +force_install_dir /home/cs2server/cs2-server
+        +app_update 730
+        +quit
+
+    - name: Démarrer le serveur CS2
+      shell: screen -S cs2 -d -m /home/cs2server/start_cs2.sh
+      args:
+        chdir: /home/cs2server
