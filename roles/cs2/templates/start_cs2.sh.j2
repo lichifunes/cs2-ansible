@@ -1,0 +1,14 @@
+#!/bin/bash
+export LD_LIBRARY_PATH=~/cs2-server/game/bin/linuxsteamrt64:$LD_LIBRARY_PATH
+
+cd ~/cs2-server/game/bin/linuxsteamrt64
+
+./cs2 -dedicated -console -usercon \
+  +game_type {{ cs2_game_type }} \
+  +game_mode {{ cs2_game_mode }} \
+  +map {{ cs2_map }} \
+  +sv_setsteamaccount {{ cs2_gslt_token }} \
+  -maxplayers {{ cs2_max_players }} \
+  -port {{ cs2_port }} \
+  +bot_quota 0 \
+  +exec server.cfg

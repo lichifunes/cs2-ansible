@@ -1,0 +1,7 @@
+---
+- name: Deploy CS2 Server
+  hosts: cs2
+  become: true
+
+  roles:
+    - cs2

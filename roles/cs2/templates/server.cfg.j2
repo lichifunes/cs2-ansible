@@ -1,0 +1,64 @@
+// === INFOS SERVEUR ===
+hostname "{{ cs2_server_name }}"
+sv_password "{{ cs2_password }}"
+sv_cheats 0
+sv_lan 0
+rcon_password "{{ cs2_rcon_password }}"
+
+// === MODE COMPÉTITIF ===
+game_type {{ cs2_game_type }}
+game_mode {{ cs2_game_mode }}
+
+// === JOUEURS ===
+mp_maxrounds 24
+mp_overtime_enable 1
+mp_overtime_maxrounds 6
+
+// === ARGENT ===
+mp_startmoney 800
+mp_afterroundmoney 0
+cash_team_bonus_shorthanded 0
+
+// === TIMERS ===
+mp_freezetime 15
+mp_roundtime 1.92
+mp_roundtime_defuse 1.92
+mp_buytime 20
+mp_c4timer 40
+
+// === FRIENDLY FIRE ===
+mp_friendlyfire 1
+ff_damage_reduction_grenade 0.85
+ff_damage_reduction_bullets 0.33
+ff_damage_reduction_other 0.4
+
+// === DEMI-TEMPS / PAUSES ===
+mp_halftime 1
+mp_match_can_clinch 1
+mp_team_timeout_max 4
+mp_team_timeout_time 30
+sv_vote_allow_spectators 0
+
+// === TECHNIQUE ===
+sv_hibernate_when_empty 0
+tv_enable 1
+tv_delay 90
+sv_minrate 128000
+sv_mincmdrate 128
+sv_minupdaterate 128
+
+// === DIVERS ===
+mp_autoteambalance 0
+mp_limitteams 0
+mp_warmuptime 60
+mp_warmup_pausetimer 1
+bot_quota 0
+
+// === LOG ===
+log on
+sv_logbans 1
+sv_logecho 1
+sv_logfile 1
+
+writeid
+writeip

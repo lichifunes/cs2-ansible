@@ -1,0 +1,17 @@
+# === Réseau ===
+cs2_public_ip: "TON_IP_PUBLIQUE"
+cs2_port: 27015
+
+# === Identité du serveur ===
+cs2_server_name: "Mon Serveur CS2"
+cs2_password: "TON_MOT_DE_PASSE"
+cs2_rcon_password: "TON_RCON_PASSWORD"
+
+# === Steam ===
+cs2_gslt_token: "TON_TOKEN_GSLT"
+
+# === Jeu ===
+cs2_max_players: 10
+cs2_map: "de_dust2"
+cs2_game_type: 0
+cs2_game_mode: 1

@@ -1,0 +1,3 @@
+# Variables sensibles — ne jamais committer
+group_vars/all.yml
+inventory/hosts.yml
