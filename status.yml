@@ -15,3 +15,37 @@
       debug:
         msg: >-
           {{ 'RUNNING — PID: ' + cs2_process.stdout.split()[0] if cs2_process.rc == 0 else 'STOPPED' }}
+
+    - name: Query A2S du serveur
+      shell: |
+        python3 -c "
+        import a2s, sys
+        address = ('{{ ansible_host }}', {{ cs2_port }})
+        try:
+            info = a2s.info(address, timeout=5)
+            print('Serveur  : ' + info.server_name)
+            print('Map      : ' + info.map_name)
+            print('Keywords : ' + str(info.keywords))
+            print('Ping     : ' + str(round(info.ping * 1000)) + ' ms')
+            players = a2s.players(address, timeout=5)
+            humans = [p for p in players if p.name.strip()]
+            print('Joueurs  : ' + str(len(humans)) + '/' + str(info.max_players))
+        except Exception as e:
+            print('Query A2S echouee : ' + str(e), file=sys.stderr)
+            sys.exit(1)
+        "
+      delegate_to: localhost
+      become: false
+      register: a2s_query
+      failed_when: false
+      changed_when: false
+
+    - name: Afficher les infos A2S
+      debug:
+        msg: "{{ a2s_query.stdout_lines }}"
+      when: a2s_query.rc == 0
+
+    - name: Serveur injoignable en A2S
+      debug:
+        msg: "Query A2S échouée — le serveur ne répond pas encore ou est arrêté."
+      when: a2s_query.rc != 0
