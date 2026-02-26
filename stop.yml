@@ -6,7 +6,7 @@
 
   tasks:
     - name: Vérifier si le serveur tourne
-      shell: pgrep -f "cs2 -dedicated"
+      shell: pgrep -x cs2
       register: cs2_process
       failed_when: false
       changed_when: false
@@ -14,6 +14,7 @@
     - name: Arrêter le serveur CS2
       shell: screen -S cs2 -X stuff "quit$(printf '\r')"
       when: cs2_process.rc == 0
+      ignore_errors: true
 
     - name: Attendre l'arrêt
       pause:

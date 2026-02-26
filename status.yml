@@ -6,7 +6,7 @@
 
   tasks:
     - name: Vérifier le processus CS2
-      shell: pgrep -af "cs2 -dedicated"
+      shell: pgrep -ax cs2
       register: cs2_process
       failed_when: false
       changed_when: false
