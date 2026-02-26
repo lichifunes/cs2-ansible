@@ -11,20 +11,7 @@
       failed_when: false
       changed_when: false
 
-    - name: Récupérer les infos du serveur
-      shell: |
-        grep -E '^hostname|^sv_password' /home/cs2server/cs2-server/game/csgo/cfg/server.cfg
-        grep -oP '(?<=\+map )\S+' /home/cs2server/start_cs2.sh
-      register: server_info
-      changed_when: false
-      when: cs2_process.rc == 0
-
     - name: Afficher le statut
       debug:
         msg: >-
           {{ 'RUNNING — PID: ' + cs2_process.stdout.split()[0] if cs2_process.rc == 0 else 'STOPPED' }}
-
-    - name: Afficher les infos serveur
-      debug:
-        msg: "{{ server_info.stdout_lines }}"
-      when: cs2_process.rc == 0
