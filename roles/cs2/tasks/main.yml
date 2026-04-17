@@ -110,6 +110,23 @@
     group: cs2server
     mode: '0644'
 
+- name: Déployer cs2_keepalive.sh
+  copy:
+    src: cs2_keepalive.sh
+    dest: /home/cs2server/cs2_keepalive.sh
+    owner: cs2server
+    group: cs2server
+    mode: '0755'
+
+- name: Planifier le keep-alive GSLT (dimanche 03h)
+  cron:
+    name: "CS2 GSLT keep-alive"
+    user: cs2server
+    job: "/home/cs2server/cs2_keepalive.sh"
+    minute: "0"
+    hour: "3"
+    weekday: "0"
+
 - name: Démarrer le serveur CS2
   become_user: cs2server
   shell: screen -S cs2 -d -m /home/cs2server/start_cs2.sh
