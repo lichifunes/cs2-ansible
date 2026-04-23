@@ -6,7 +6,7 @@
 
   tasks:
     - name: Vérifier si le serveur tourne déjà
-      shell: pgrep -x cs2
+      shell: pgrep -f "cs2 -dedicated"
       register: cs2_process
       failed_when: false
       changed_when: false

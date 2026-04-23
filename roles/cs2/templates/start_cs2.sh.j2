@@ -1,4 +1,9 @@
 #!/bin/bash
+if pgrep -f "cs2 -dedicated" > /dev/null; then
+  echo "CS2 already running, aborting start"
+  exit 0
+fi
+
 export LD_LIBRARY_PATH=~/cs2-server/game/bin/linuxsteamrt64:$LD_LIBRARY_PATH
 
 cd ~/cs2-server/game/bin/linuxsteamrt64

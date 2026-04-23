@@ -127,9 +127,18 @@
     hour: "3"
     weekday: "0"
 
+- name: Vérifier si le serveur tourne déjà
+  become_user: cs2server
+  shell: pgrep -f "cs2 -dedicated"
+  register: cs2_process
+  failed_when: false
+  changed_when: false
+
 - name: Démarrer le serveur CS2
   become_user: cs2server
   shell: screen -S cs2 -d -m /home/cs2server/start_cs2.sh
   args:
     chdir: /home/cs2server
-  when: not ansible_check_mode
+  when:
+    - not ansible_check_mode
+    - cs2_process.rc != 0
