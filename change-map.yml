@@ -18,6 +18,15 @@
       failed_when: false
       changed_when: false
 
+    - name: Annoncer le changement de map
+      shell: screen -S cs2 -X stuff "say Changing map to {{ cs2_new_map }} in 10s - you will be disconnected, please reconnect$(printf '\r')"
+      when: cs2_process.rc == 0
+
+    - name: Attendre 10 secondes
+      pause:
+        seconds: 10
+      when: cs2_process.rc == 0
+
     - name: Changer la map
       shell: screen -S cs2 -X stuff "map {{ cs2_new_map }}$(printf '\r')"
       when: cs2_process.rc == 0
