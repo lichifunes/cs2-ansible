@@ -11,7 +11,19 @@
       failed_when: false
       changed_when: false
 
-    - name: Afficher le statut
+    - name: Interroger le serveur via a2s
+      shell: python3 /home/cs2server/check_cs2.py
+      register: cs2_info
+      failed_when: false
+      changed_when: false
+      when: cs2_process.rc == 0
+
+    - name: Afficher le statut (serveur arrêté)
       debug:
-        msg: >-
-          {{ 'RUNNING — PID: ' + cs2_process.stdout.split()[0] if cs2_process.rc == 0 else 'STOPPED' }}
+        msg: "STOPPED"
+      when: cs2_process.rc != 0
+
+    - name: Afficher le statut (serveur en cours)
+      debug:
+        msg: "{{ ('RUNNING — PID: ' + cs2_process.stdout.split()[0] + '\n\n' + cs2_info.stdout) if cs2_info.rc == 0 else ('RUNNING — PID: ' + cs2_process.stdout.split()[0] + '\n\nErreur a2s:\n' + cs2_info.stderr) }}"
+      when: cs2_process.rc == 0

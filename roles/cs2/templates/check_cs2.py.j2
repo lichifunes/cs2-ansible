@@ -1,13 +1,47 @@
 import a2s
+import glob
+import re
 import sys
 
 address = ("{{ ansible_host }}", {{ cs2_port }})
+
+MODE_PRESETS = {
+    (0, 0): "Casual",
+    (0, 1): "Competitive",
+    (0, 2): "Wingman",
+    (1, 0): "Arms Race",
+    (1, 2): "Deathmatch",
+    (2, 0): "Custom",
+}
+
+
+def detect_startup_mode():
+    for cmdline_path in glob.glob("/proc/*/cmdline"):
+        try:
+            with open(cmdline_path, "rb") as f:
+                raw = f.read()
+        except (OSError, PermissionError):
+            continue
+        joined = raw.replace(b"\x00", b" ").decode("utf-8", "ignore")
+        if "cs2 -dedicated" not in joined:
+            continue
+        gt = re.search(r"\+game_type\s+(\d+)", joined)
+        gm = re.search(r"\+game_mode\s+(\d+)", joined)
+        if gt and gm:
+            return int(gt.group(1)), int(gm.group(1))
+    return None
+
 
 try:
     info = a2s.info(address, timeout=5)
     print(f"Serveur  : {info.server_name}")
     print(f"Map      : {info.map_name}")
-    print(f"Keywords : {info.keywords}")
+
+    mode = detect_startup_mode()
+    if mode is not None:
+        label = MODE_PRESETS.get(mode, f"game_type={mode[0]} game_mode={mode[1]}")
+        print(f"Mode     : {label} (au démarrage)")
+    print(f"Tags     : {info.keywords}")
     print(f"Ping     : {round(info.ping * 1000)} ms")
 
     try:
