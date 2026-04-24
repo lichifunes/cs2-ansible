@@ -39,7 +39,7 @@
       shell: |
         python3 - <<'EOF'
         import a2s
-        info = a2s.info(("{{ ansible_host }}", {{ cs2_port }}), timeout=5)
+        info = a2s.info(("{{ ansible_host }}", {{ cs2_port | default(27015) }}), timeout=5)
         print(info.map_name)
         EOF
       register: a2s_map
@@ -48,7 +48,7 @@
 
     - name: Déterminer la map à recharger
       set_fact:
-        current_map: "{{ a2s_map.stdout | trim if a2s_map.rc == 0 and a2s_map.stdout | trim | length > 0 else cs2_map }}"
+        current_map: "{{ a2s_map.stdout | trim if a2s_map.rc == 0 and a2s_map.stdout | trim | length > 0 else (cs2_map | default('de_dust2')) }}"
 
     - name: Annoncer le changement de mode
       shell: >-
