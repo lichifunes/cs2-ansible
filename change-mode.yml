@@ -1,0 +1,65 @@
+---
+- name: Change CS2 Game Mode
+  hosts: cs2
+  become: true
+  become_user: cs2server
+
+  vars:
+    cs2_game_presets:
+      casual:       { type: 0, mode: 0 }
+      competitive:  { type: 0, mode: 1 }
+      wingman:      { type: 0, mode: 2 }
+      armsrace:     { type: 1, mode: 0 }
+      deathmatch:   { type: 1, mode: 2 }
+      custom:       { type: 2, mode: 0 }
+
+  tasks:
+    - name: Vérifier que cs2_game_preset est défini et valide
+      assert:
+        that:
+          - cs2_game_preset is defined
+          - cs2_game_preset | length > 0
+          - cs2_game_preset in cs2_game_presets
+        fail_msg: >-
+          ERREUR : cs2_game_preset doit être l'un de
+          {{ cs2_game_presets.keys() | list | join(', ') }}.
+
+    - name: Vérifier si le serveur tourne
+      shell: pgrep -f "cs2 -dedicated"
+      register: cs2_process
+      failed_when: false
+      changed_when: false
+
+    - name: Serveur non démarré
+      fail:
+        msg: "Le serveur CS2 n'est pas en cours d'exécution."
+      when: cs2_process.rc != 0
+
+    - name: Récupérer la map courante via a2s
+      shell: |
+        python3 - <<'EOF'
+        import a2s
+        info = a2s.info(("{{ ansible_host }}", {{ cs2_port }}), timeout=5)
+        print(info.map_name)
+        EOF
+      register: a2s_map
+      failed_when: false
+      changed_when: false
+
+    - name: Déterminer la map à recharger
+      set_fact:
+        current_map: "{{ a2s_map.stdout | trim if a2s_map.rc == 0 and a2s_map.stdout | trim | length > 0 else cs2_map }}"
+
+    - name: Annoncer le changement de mode
+      shell: >-
+        screen -S cs2 -X stuff
+        "say Changing game mode to {{ cs2_game_preset }} in 10s - you will be disconnected, please reconnect$(printf '\r')"
+
+    - name: Attendre 10 secondes
+      pause:
+        seconds: 10
+
+    - name: Appliquer les convars et recharger la map
+      shell: >-
+        screen -S cs2 -X stuff
+        "game_type {{ cs2_game_presets[cs2_game_preset].type }}; game_mode {{ cs2_game_presets[cs2_game_preset].mode }}; changelevel {{ current_map }}$(printf '\r')"
