@@ -129,7 +129,7 @@
 
 - name: Vérifier si le serveur tourne déjà
   become_user: cs2server
-  shell: pgrep -f "cs2 -dedicated"
+  shell: pgrep -f "[c]s2 -dedicated"
   register: cs2_process
   failed_when: false
   changed_when: false

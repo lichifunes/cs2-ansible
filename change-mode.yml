@@ -25,7 +25,7 @@
           {{ cs2_game_presets.keys() | list | join(', ') }}.
 
     - name: Vérifier si le serveur tourne
-      shell: pgrep -f "cs2 -dedicated"
+      shell: pgrep -f "[c]s2 -dedicated"
       register: cs2_process
       failed_when: false
       changed_when: false
